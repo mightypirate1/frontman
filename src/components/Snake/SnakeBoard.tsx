@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Snake from './Snake';
 import './Snake.css';
 
@@ -7,7 +7,9 @@ function SnakeBoard() {
     const updateFrequencyMs = 1000;
 
     const [snake, setSnake] = useState(new Snake());
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const [snakeCoords, setSnakeCoords] = useState(snake.getPositions());
+
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
         switch (e.key) {
             case "ArrowUp":
                 console.log("up key pressed");
@@ -29,11 +31,15 @@ function SnakeBoard() {
                 console.log("space key pressed");
                 snake.tick(false);
                 break;
+            case "r":
+                console.log("r key pressed");
+                setSnake(new Snake());
+                break;
             default:
                 console.log("Invalid key");
                 break;
         }
-    }
+    }, [snake]);
 
     useEffect(() => {
         window.addEventListener("keydown", handleKeyDown);
@@ -44,26 +50,26 @@ function SnakeBoard() {
 
     useEffect(() => {
         const interval = setInterval(() => {
+            console.log("tick: " + snake.getHead());
             snake.tick(false);
+            setSnakeCoords(snake.getPositions());
         }, updateFrequencyMs);
         return () => {
             clearInterval(interval);
         };
     }, [snake]);
 
-    const snakeCoords = snake.getPositions();
     return (
-        <div className="snake_board">
-            {[...Array(gridSize)].map((_, row) => (
+        <div className="grid">
+            {Array(gridSize).fill(0).map((_, row) => (
                 <div key={row} className="row">
-                    {[...Array(gridSize)].map((_, col) => (
-                        <div
-                            key={col}
-                            className={
-                                `cell ${snakeCoords.some(([r, c]) => r === row && c === col) ? "snake" : ""}`
-                            }
-                        ></div>
-                    ))}
+                    {Array(gridSize).fill(0).map((_, col) => {
+                        let className = "cell";
+                        if (snakeCoords.some(([r, c]) => r === row && c === col)) {
+                            className += " snake";
+                        }
+                        return <div key={col} className={className}/>;
+                    })}
                 </div>
             ))}
         </div>

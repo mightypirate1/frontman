@@ -11,8 +11,8 @@ class Snake {
     // }
 
     constructor() {
-        this.positions = [[5, 5], [5, 6], [5, 7]];
-        this.direction = "left";
+        this.positions = [[5, 7], [5, 6], [5, 5]];
+        this.direction = "right";
     }
 
     public tick(eat: boolean): void {
@@ -28,7 +28,7 @@ class Snake {
     }
 
     public getPositions(): [number, number][] {
-        return this.positions
+        return this.positions.slice();
     }
 
     public setDirection(direction: string): void {
@@ -39,13 +39,13 @@ class Snake {
         const head = this.getHead();
         switch (this.direction) {
             case "up":
-                return [head[0], head[1] - 1];
-            case "down":
-                return [head[0], head[1] + 1];
-            case "left":
                 return [head[0] - 1, head[1]];
-            case "right":
+            case "down":
                 return [head[0] + 1, head[1]];
+            case "left":
+                return [head[0], head[1] - 1];
+            case "right":
+                return [head[0], head[1] + 1];
             default:
                 return head;
         }
