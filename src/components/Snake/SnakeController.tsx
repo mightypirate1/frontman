@@ -76,7 +76,7 @@ function SnakeController() {
         <Snackbar
             open={gameOver}
             autoHideDuration={6000}
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         >
             <Alert onClose={() => setGameOver(false)} severity="error" sx={{ width: '100%' }}>
                 Game Over! Your score is {score}.

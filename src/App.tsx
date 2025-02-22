@@ -1,9 +1,9 @@
+import StartPage from './pages/StartPage/StartPage';
 import './App.css'
-import SnakeController from './components/Snake/SnakeController';
 
 function App() {
   return (
-    <SnakeController />
+    <StartPage />
   )
 }
 
