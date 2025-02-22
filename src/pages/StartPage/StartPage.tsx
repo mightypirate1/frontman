@@ -15,7 +15,7 @@ function StartPage() {
   const appBarWidth = 240;
   const headerHeight = 65;
   const ghAvatar = "https://avatars.githubusercontent.com/u/19390975?s=400&u=1358e735334214fa0a842a63d949fe5363e88494&v=4";
-  const [activePage, setActivePage] = useState("");
+  const [activePage, setActivePage] = useState("start");
   
   const getContents = (activePage: string) => {
     switch (activePage) {
@@ -38,7 +38,7 @@ function StartPage() {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <AppBar
         position="fixed"
         color="primary"
@@ -59,10 +59,15 @@ function StartPage() {
         <TabContext value={activePage}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList onChange={handleChange} aria-label="lab API tabs example">
+              <Tab label="Disclaimer" value="start" />
               <Tab label="Snake" value="snake" />
               <Tab label="Dbg" value="dbg" />
             </TabList>
           </Box>
+          <TabPanel value="start">
+            <Typography>I am not a frontender, as you well can tell!</Typography>
+            Either way, there are some toys on the tabs above.
+          </TabPanel>
           <TabPanel value="snake"><SnakeController/></TabPanel>
           <TabPanel value="dbg"><Dbg/></TabPanel>
         </TabContext>
