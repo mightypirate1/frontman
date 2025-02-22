@@ -23,7 +23,7 @@ class SnakeGame {
     }
 
     public getFoods(): Food[] {
-        return this.foods.slice();
+        return this.foods;
     }
 
     public tick(): number {
