@@ -1,4 +1,4 @@
-import Coord from "./Coord";
+import Coord from "../Grid/Coord";
 import Food from "./Food";
 import Snake from "./Snake";
 

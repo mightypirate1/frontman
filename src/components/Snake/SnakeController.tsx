@@ -2,11 +2,15 @@ import { useState, useEffect, useCallback } from "react";
 import { Alert, Box, Fab, Paper, Slider, Snackbar } from "@mui/material";
 import ReplayIcon from '@mui/icons-material/Replay';
 
-import SnakeBoard from "./SnakeBoard";
 import SnakeGame from "./SnakeGame";
+import GridRenderer from "../Grid/GridRenrerer";
 
 function SnakeController() {
+    const snakeColor = "#61dafb";
+    const foodColor = "#ff6347";
+    const emptyColor = "#282c34";
     const gridSize = 20;
+    const cellPxSize = 30;
     const minFrequencyMs = 10;
     const maxFrequencyMs = 300;
     const coolColor = "#870089";
@@ -14,17 +18,35 @@ function SnakeController() {
     const [score, setScore] = useState(0);
     const [updateFrequencyMs, setUpdateFrequencyMs] = useState(300);
     const [game, setGame] = useState(new SnakeGame(gridSize));
-    const [snakeCoords, setSnakeCoords] = useState(game.getSnakeCoords());
-    const [foods, setFoods] = useState(game.getFoods());
+    const [coordColors, setCoordColors] = useState(new Map<string, string>());
     const [gameOver, setGameOver] = useState(false);
+
+    const render = () => {
+        return GridRenderer(
+            [gridSize, gridSize],
+            [cellPxSize, cellPxSize],
+            coordColors,
+            emptyColor
+        );
+    };
+
+    const getCoordColors = (game: SnakeGame) => {
+        const coordColors = new Map();
+        for (const coord of game.getSnakeCoords()) {
+            coordColors.set(coord.asKey(), snakeColor);
+        }
+        for (const food of game.getFoods()) {
+            coordColors.set(food.getPosition().asKey(), foodColor);
+        }
+        return coordColors;
+    }
 
     const restartGame = () => {
         const newGame = new SnakeGame(gridSize);
         setGame(newGame);
         setScore(0);
         setGameOver(false);
-        setSnakeCoords(game.getSnakeCoords());
-        setFoods(game.getFoods());
+        setCoordColors(getCoordColors(game));
     };
 
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -63,15 +85,14 @@ function SnakeController() {
             if (game.gameOver()) {
                 setGameOver(true);
             }
-            setSnakeCoords(game.getSnakeCoords());
-            setFoods(game.getFoods());
+            setCoordColors(getCoordColors(game));
         }, updateFrequencyMs);
         return () => {
             clearInterval(interval);
         };
     }, [game, updateFrequencyMs]);
 
-    const board = SnakeBoard(snakeCoords, foods, gridSize);
+    const board = render();
     return <>
         <Snackbar
             open={gameOver}

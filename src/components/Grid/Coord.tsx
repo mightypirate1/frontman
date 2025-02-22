@@ -11,6 +11,10 @@ class Coord {
         return new Coord(x, y);
     }
 
+    public asKey(): string {
+        return `coord[${this.x},${this.y}]`;
+    }
+
     public equals(other: Coord): boolean;
     public equals(x: number, y: number): boolean;
     public equals(arg1: Coord | number, arg2?: number): boolean {

@@ -1,4 +1,4 @@
-import Coord from "./Coord";
+import Coord from "../Grid/Coord";
 
 
 class Food {
@@ -6,6 +6,10 @@ class Food {
 
     constructor(position: Coord) {
         this.position = position;
+    }
+
+    public getPosition(): Coord {
+        return this.position;
     }
 
     public isAt(x: number, y: number): boolean;
