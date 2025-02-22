@@ -6,6 +6,8 @@ class Snake {
     private positions: Coord[];
     private lastTickDirection: string;
     private growth: number;
+    private keyPressQueue: string;
+    private keyPressedThisTick: boolean;
 
     constructor() {
         this.positions = [
@@ -16,6 +18,8 @@ class Snake {
         this.direction = "right";
         this.lastTickDirection = "right";
         this.growth = 0;
+        this.keyPressQueue = "";
+        this.keyPressedThisTick = false;
     }
 
     public getHead(): Coord {
@@ -35,6 +39,14 @@ class Snake {
         } else {
             this.growth -= 1;
         }
+
+        if (this.keyPressQueue !== "") {
+            this.keyPressedThisTick = false;
+            const direction = this.keyPressQueue;
+            this.keyPressQueue = "";
+            this.setDirection(direction);
+        }
+        this.keyPressedThisTick = false;
     }
 
     public eat(): void {
@@ -54,19 +66,25 @@ class Snake {
     }
 
     public setDirection(direction: string): void {
-        if (this.lastTickDirection === "up" && direction === "down") {
+        if (!this.keyPressedThisTick) {
+            if (this.oppositeDirection(this.lastTickDirection, direction)) {
+                return;
+            }
+            this.direction = direction;
+            this.keyPressedThisTick = true;
             return;
         }
-        if (this.lastTickDirection === "down" && direction === "up") {
-            return;
-        }
-        if (this.lastTickDirection === "left" && direction === "right") {
-            return;
-        }
-        if (this.lastTickDirection === "right" && direction === "left") {
-            return;
-        }
-        this.direction = direction;
+        // If the action is not applicably, we queue it up
+        this.keyPressQueue = direction;
+    }
+
+    private oppositeDirection(directionA: string, directionB: string): boolean {
+        return (
+            (directionA === "up" && directionB === "down")
+            || (directionA === "down" && directionB === "up")
+            || (directionA === "left" && directionB === "right")
+            || (directionA === "right" && directionB === "left")
+        );
     }
 
     private getTickedHead(): Coord {
