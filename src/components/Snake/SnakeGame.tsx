@@ -26,9 +26,10 @@ class SnakeGame {
         return this.foods.slice();
     }
 
-    public tick(): void {
+    public tick(): number {
+        let reward = 0;
         if (this.snake.isDead(this.gridSize, this.gridSize)) {
-            return;
+            return reward;
         }
         this.snake.tick();
         const head = this.snake.getHead();
@@ -39,8 +40,14 @@ class SnakeGame {
         });
         if (eaten.length > 0) {
             this.spawnFood();
+            reward += eaten.length;
         }
         this.foods = this.foods.filter(food => !food.isAt(head));
+        return reward;
+    }
+
+    public gameOver(): boolean {
+        return this.snake.isDead(this.gridSize, this.gridSize);
     }
 
     public spawnFood(): void {
