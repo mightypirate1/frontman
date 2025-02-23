@@ -7,6 +7,7 @@ function GridRenderer(
     cellSize: [number, number],
     coloredCoords: Map<string, string>,
     backgroundColor: string,
+    border: string = "1px solid black",
 ) {
     const [height, width] = dimensions;
     const [cellHeight, cellWidth] =
@@ -18,9 +19,6 @@ function GridRenderer(
                     {Array(width).fill(0).map((_, col) => {
                         const cellCoord = new Coord(row, col);
                         const cellColor = coloredCoords.get(cellCoord.asKey());
-                        if (cellColor !== undefined) {
-                            console.log(`No color for ${cellCoord}`, cellColor);
-                        }
                         return (
                             <Box className="cell"
                                 key={col}
@@ -28,7 +26,7 @@ function GridRenderer(
                                     backgroundColor: cellColor ?? backgroundColor,
                                     height: cellHeight,
                                     width: cellWidth,
-                                    border: "1px solid black",
+                                    border: border,
                                 }}
                             />
                         )

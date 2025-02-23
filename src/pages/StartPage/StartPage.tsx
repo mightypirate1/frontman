@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { Toolbar, Typography, Box, AppBar, Avatar, Tab } from '@mui/material'
 import TabContext from '@mui/lab/TabContext';
+import { TabList, TabPanel } from '@mui/lab';
 import '../../App.css'
 
 import SnakeController from '../../components/Snake/SnakeController';
-import Dbg from '../../components/GameOfLife/Dbg';
-import { TabList, TabPanel } from '@mui/lab';
+import GameOfLife from '../../components/GameOfLife/GameOfLife';
 
 function StartPage() {
   const headerHeight = 65;
@@ -40,7 +40,7 @@ function StartPage() {
             <TabList onChange={handleTabChange} aria-label="lab API tabs example">
               <Tab label="Disclaimer" value="start" />
               <Tab label="Snake" value="snake" />
-              <Tab label="Dbg" value="dbg" />
+              <Tab label="Life" value="life" />
             </TabList>
           </Box>
           <TabPanel value="start">
@@ -48,7 +48,7 @@ function StartPage() {
             Either way, there are some toys on the tabs above.
           </TabPanel>
           <TabPanel value="snake"><SnakeController/></TabPanel>
-          <TabPanel value="dbg"><Dbg/></TabPanel>
+          <TabPanel value="life"><GameOfLife/></TabPanel>
         </TabContext>
       </Box>
     </Box>
