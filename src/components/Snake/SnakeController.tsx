@@ -10,7 +10,9 @@ function SnakeController() {
     const foodColor = "#ff6347";
     const emptyColor = "#282c34";
     const gridSize = 20;
+    const borderWidthPx = 1;
     const cellPxSize = 30;
+    const boardPxSize = gridSize * (2 * borderWidthPx + cellPxSize);
     const minFrequencyMs = 10;
     const maxFrequencyMs = 300;
     const coolColor = "#870089";
@@ -26,7 +28,8 @@ function SnakeController() {
             [gridSize, gridSize],
             [cellPxSize, cellPxSize],
             coordColors,
-            emptyColor
+            emptyColor,
+            `${borderWidthPx}px solid black`,
         );
     };
 
@@ -103,8 +106,8 @@ function SnakeController() {
                 Game Over! Your score is {score}.
             </Alert>
         </Snackbar>
-        <Paper elevation={15}>{board}</Paper>
-        <Box component="section" color="secondary" sx={{ p: "10px" }}>
+        <Paper elevation={15} sx={{ width: `${boardPxSize}px` }}>{board}</Paper>
+        <Box component="section" color="secondary" sx={{ p: "10px",  width: `${boardPxSize}px` }}>
             <div style={{ display: "flex", flexDirection: "row", alignItems: "center", margin: "0px" }}>
                 <Slider
                     aria-label="Speed"

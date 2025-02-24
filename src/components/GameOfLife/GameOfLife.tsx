@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Box, FormControlLabel, FormGroup, Modal, Slider, Switch, Typography } from "@mui/material";
+import { Box, FormControlLabel, FormGroup, Modal, Paper, Slider, Switch, Typography } from "@mui/material";
 import InfoIcon from '@mui/icons-material/Info';
 
 import Coord from "../Grid/Coord";
@@ -150,7 +150,7 @@ function GameOfLife() {
         style={{ display: "flex" }}
         >   
             {helpModal()}
-            <FormGroup> 
+            <FormGroup>
                 <FormControlLabel control={
                     <Switch 
                         checked={borderLives}
@@ -179,13 +179,14 @@ function GameOfLife() {
                 <InfoIcon/> What gives?
             </Box>
             </FormGroup>
-            <div
+            <Paper
+                elevation={15}
                 ref={gridRef}
                 onClick={handleClick}
                 style={{ width: widthPx, height: heightPx }}
             >
                 {render(colorCoords)}
-            </div>
+            </Paper>
         </div>
     );
 }

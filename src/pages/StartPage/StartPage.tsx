@@ -6,9 +6,10 @@ import '../../App.css'
 
 import SnakeController from '../../components/Snake/SnakeController';
 import GameOfLife from '../../components/GameOfLife/GameOfLife';
+import SoFController from '../../components/SnakeofLife/SoFController';
 
 function StartPage() {
-  const headerHeight = 65;
+  const headerHeight = 62;
   const ghAvatar = "https://avatars.githubusercontent.com/u/19390975?s=400&u=1358e735334214fa0a842a63d949fe5363e88494&v=4";
   const [activeTab, setActiveTab] = useState("start");
 
@@ -34,13 +35,16 @@ function StartPage() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Box component="nav" sx={{ width: "100hh", marginTop: `${headerHeight}px` }}>
+      <Box component="nav" sx={{ 
+        width: "1000px", marginTop: `${headerHeight}px`, height: "80vh"
+      }}>
         <TabContext value={activeTab}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList onChange={handleTabChange} aria-label="lab API tabs example">
               <Tab label="Disclaimer" value="start" />
               <Tab label="Snake" value="snake" />
               <Tab label="Life" value="life" />
+              <Tab label="SnakeLife" value="snake-life" />
             </TabList>
           </Box>
           <TabPanel value="start">
@@ -49,6 +53,7 @@ function StartPage() {
           </TabPanel>
           <TabPanel value="snake"><SnakeController/></TabPanel>
           <TabPanel value="life"><GameOfLife/></TabPanel>
+          <TabPanel value="snake-life"><SoFController/></TabPanel>
         </TabContext>
       </Box>
     </Box>
