@@ -4,14 +4,20 @@ import Snake from "./Snake";
 
 class SnakeGame {
     private gridSize: number;
+    private score: number;
+    private autoSpawnFood: boolean;
     private snake: Snake;
     private foods: Food[];
 
-    constructor(gridSize: number) {
+    constructor(gridSize: number, autoSpawnFood: boolean = true) {
         this.gridSize = gridSize;
+        this.score = 0;
+        this.autoSpawnFood = autoSpawnFood;
         this.snake = new Snake();
         this.foods = [];
-        this.spawnFood();
+        if (this.autoSpawnFood) {
+            this.spawnFood();
+        }
     }
 
     public getSnakeCoords(): Coord[] {
@@ -24,6 +30,11 @@ class SnakeGame {
 
     public getFoods(): Food[] {
         return this.foods;
+    }
+
+    public fakeEat(): void {
+        this.snake.eat();
+        this.score += 1;
     }
 
     public tick(): number {
@@ -39,7 +50,10 @@ class SnakeGame {
             this.snake.eat();
         });
         if (eaten.length > 0) {
-            this.spawnFood();
+            if (this.autoSpawnFood) {
+                this.spawnFood();
+            }
+            this.score += eaten.length;
             reward += eaten.length;
         }
         this.foods = this.foods.filter(food => !food.isAt(head));
@@ -50,23 +64,32 @@ class SnakeGame {
         return this.snake.isDead(this.gridSize, this.gridSize);
     }
 
+    public getScore(): number {
+        return this.score;
+    }
+
     public spawnFood(): void {
-        const coord = this.uniqueRandomCoord();
+        let allCoords = [];
+        for (let i = 0; i < this.gridSize; i++) {
+            for (let j = 0; j < this.gridSize; j++) {
+                allCoords.push(Coord.new(i, j));
+            }
+        }
+        let occupiedCoords = this.snake.getPositions().concat(
+            this.foods.map(f => f.getPosition())
+        );
+        const freeCoords = allCoords.filter(c => !occupiedCoords.some(oc => oc.equals(c)));
+        if (freeCoords.length === 0) {
+            return;
+        }
+        const coord = this.randomCoord(freeCoords);
         const newFood = new Food(coord);
         this.foods.push(newFood);
     }
 
-    private uniqueRandomCoord(): Coord {
-        let coord: Coord;
-        do {
-            const x = Math.floor(Math.random() * this.gridSize);
-            const y = Math.floor(Math.random() * this.gridSize);
-            coord = Coord.new(x, y);
-        } while (
-            this.snake.getPositions().some(c => c.equals(coord))
-            || this.foods.some(f => f.isAt(coord))
-        );
-        return coord;
+    private randomCoord(coords: Coord[]): Coord {
+        const randomIndex = Math.floor(Math.random() * coords.length);
+        return coords[randomIndex];
     }
 }
 
